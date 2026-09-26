@@ -52,10 +52,11 @@ if ($Target.Equals("Debug")) {
     Copy-Item -Path "$TargetPath\$name.dll" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.pdb" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.dll.mdb" -Destination "$plug" -Force
+    Get-ChildItem -Path "$ProjectPath\localization\*" | Copy-Item -Destination "$plug\Translations" -Recurse -Container -Force
 }
 
 if($Target.Equals("Release")) {
-    Write-Host "Packaging for ThunderStore..."
+    Write-Host "Packaging..."
     $Package="Package"
     $PackagePath="$ProjectPath\$Package"
 
@@ -63,6 +64,7 @@ if($Target.Equals("Release")) {
     New-Item -Type Directory -Path "$PackagePath\plugins" -Force
     Copy-Item -Path "$TargetPath\$TargetAssembly" -Destination "$PackagePath\plugins\$TargetAssembly" -Force
     Copy-Item -Path "$ProjectPath\README.md" -Destination "$PackagePath\README.md" -Force
+    Copy-Item -Path "$ProjectPath\localization\*" -Recurse -Destination "$PackagePath" -Force
     Compress-Archive -Path "$PackagePath\*" -DestinationPath "$TargetPath\$name.zip" -Force
 }
 
